@@ -19,6 +19,8 @@ class LandingPage extends StatelessWidget {
     return Scaffold(
       body: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
+        width: double.infinity,
+        height: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -35,7 +37,10 @@ class LandingPage extends StatelessWidget {
                 behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
                 child: SingleChildScrollView(
                   child: ConstrainedBox(
-                    constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                    constraints: BoxConstraints(
+                      minWidth: constraints.maxWidth,
+                      minHeight: constraints.maxHeight,
+                    ),
                     child: SafeArea(
                       child: Padding(
                         padding: EdgeInsets.symmetric(
