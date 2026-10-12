@@ -1,0 +1,28 @@
+name: maab_landing
+description: "Maab landing page."
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.13.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  url_launcher: ^6.3.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/logo.png
+
+  fonts:
+    - family: Amiri Quran
+      fonts:
+        - asset: assets/amiri_quran_regular.ttf
