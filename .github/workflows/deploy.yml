@@ -28,6 +28,13 @@ jobs:
           cache: true
       - run: flutter pub get
       - run: flutter build web --release --base-href "/${{ github.event.repository.name }}/"
+      # GitHub Pages lets browsers keep files for 10 minutes: name each deploy's scripts by commit
+      # so a visitor gets the new page at once instead of the cached one.
+      - name: Version the scripts
+        run: |
+          V="${GITHUB_SHA::7}"
+          sed -i "s/main\.dart\.js/main.dart.js?v=$V/g" build/web/flutter_bootstrap.js
+          sed -i "s/flutter_bootstrap\.js\"/flutter_bootstrap.js?v=$V\"/" build/web/index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
