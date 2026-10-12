@@ -28,7 +28,8 @@ class _StoreButtonState extends State<StoreButton> {
 
   @override
   Widget build(BuildContext context) {
-    final foreground = _enabled ? LandingColors.ink : LandingColors.paleGold.withValues(alpha: 0.7);
+    final palette = LandingPalette.of(context);
+    final foreground = _enabled ? LandingColors.ink : palette.muted;
 
     return MouseRegion(
       cursor: _enabled ? SystemMouseCursors.click : SystemMouseCursors.forbidden,
@@ -52,11 +53,11 @@ class _StoreButtonState extends State<StoreButton> {
                       colors: [LandingColors.goldGlow, LandingColors.richGold, LandingColors.deepGold],
                     )
                   : null,
-              color: _enabled ? null : LandingColors.ink.withValues(alpha: 0.35),
+              color: _enabled ? null : palette.mutedBackground,
               border: Border.all(
                 color: _enabled
                     ? LandingColors.goldGlow
-                    : LandingColors.paleGold.withValues(alpha: 0.35),
+                    : palette.muted.withValues(alpha: 0.4),
                 width: 1.2,
               ),
               boxShadow: _enabled

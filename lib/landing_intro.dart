@@ -2,20 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'landing_colors.dart';
+import 'landing_strings.dart';
 import 'store_button.dart';
 
 /// The latest APK published by the release workflow of the Maab app.
 final Uri androidApkUrl = Uri.parse(
   'https://github.com/azabcodes/maab_releases/releases/latest/download/Maab.apk',
 );
-
-const List<(IconData, String)> _features = [
-  (Icons.menu_book_rounded, 'المصحف والتفسير'),
-  (Icons.mic_rounded, 'تسميع القرآن'),
-  (Icons.access_time_rounded, 'مواقيت الصلاة والأذان'),
-  (Icons.auto_awesome_rounded, 'الأذكار والتسبيح'),
-  (Icons.groups_rounded, 'خطط مع أصحابك'),
-];
 
 /// The headline, the features and the download buttons.
 class LandingIntro extends StatelessWidget {
@@ -27,24 +20,33 @@ class LandingIntro extends StatelessWidget {
   Widget build(BuildContext context) {
     final align = wide ? CrossAxisAlignment.start : CrossAxisAlignment.center;
     final textAlign = wide ? TextAlign.start : TextAlign.center;
+    final strings = LandingStrings.of(context);
+    final palette = LandingPalette.of(context);
+    final features = [
+      (Icons.menu_book_rounded, strings.featureMushaf),
+      (Icons.mic_rounded, strings.featureTasmee),
+      (Icons.access_time_rounded, strings.featurePrayer),
+      (Icons.auto_awesome_rounded, strings.featureAdhkar),
+      (Icons.groups_rounded, strings.featureCompanions),
+    ];
     final buttons = [
       StoreButton(
         icon: Icons.android_rounded,
-        caption: 'حمّل الآن',
-        label: 'لأجهزة أندرويد',
+        caption: strings.downloadNow,
+        label: strings.forAndroid,
         onTap: () => launchUrl(androidApkUrl),
       ),
-      const StoreButton(icon: Icons.apple_rounded, caption: 'قريبًا', label: 'على الآيفون'),
+      StoreButton(icon: Icons.apple_rounded, caption: strings.comingSoon, label: strings.onIphone),
     ];
 
     return Column(
       crossAxisAlignment: align,
       children: [
         Text(
-          'رفيقك اليومي إلى الله',
+          strings.headline,
           textAlign: textAlign,
           style: TextStyle(
-            color: LandingColors.cream,
+            color: palette.title,
             fontSize: wide ? 54 : 34,
             height: 1.5,
             fontWeight: FontWeight.bold,
@@ -52,10 +54,10 @@ class LandingIntro extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          'كل ما يعينك على يومك مع الله، في تطبيق واحد.',
+          strings.description,
           textAlign: textAlign,
           style: TextStyle(
-            color: LandingColors.paleGold.withValues(alpha: 0.85),
+            color: palette.subtitle,
             fontSize: wide ? 22 : 18,
             height: 1.7,
           ),
@@ -65,7 +67,7 @@ class LandingIntro extends StatelessWidget {
           alignment: wide ? WrapAlignment.start : WrapAlignment.center,
           spacing: 8,
           runSpacing: 8,
-          children: [for (final (icon, label) in _features) _FeatureChip(icon: icon, label: label)],
+          children: [for (final (icon, label) in features) _FeatureChip(icon: icon, label: label)],
         ),
         SizedBox(height: wide ? 36 : 28),
         if (wide)
@@ -89,19 +91,20 @@ class _FeatureChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = LandingPalette.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
       decoration: BoxDecoration(
-        color: LandingColors.ink.withValues(alpha: 0.35),
+        color: palette.chipBackground,
         borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: LandingColors.paleGold.withValues(alpha: 0.25)),
+        border: Border.all(color: palette.chipBorder),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 18, color: LandingColors.richGold),
           const SizedBox(width: 8),
-          Text(label, style: const TextStyle(color: LandingColors.cream, fontSize: 15)),
+          Text(label, style: TextStyle(color: palette.chipText, fontSize: 15)),
         ],
       ),
     );

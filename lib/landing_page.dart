@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'landing_colors.dart';
 import 'landing_intro.dart';
 import 'landing_logo.dart';
+import 'landing_strings.dart';
+import 'landing_toolbar.dart';
 import 'star_pattern_painter.dart';
 
 /// Screens at least this wide put the logo beside the text instead of above it.
@@ -13,21 +15,23 @@ class LandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = LandingPalette.of(context);
     return Scaffold(
-      body: DecoratedBox(
-        decoration: const BoxDecoration(
+      body: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [LandingColors.forestGreen, LandingColors.maabGreen, LandingColors.ink],
+            colors: palette.background,
           ),
         ),
         child: CustomPaint(
-          painter: const StarPatternPainter(),
+          painter: StarPatternPainter(color: palette.pattern),
           child: LayoutBuilder(
             builder: (context, constraints) {
               final wide = constraints.maxWidth >= _wideBreakpoint;
-              return ScrollConfiguration(
+              final page = ScrollConfiguration(
                 behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
                 child: SingleChildScrollView(
                   child: ConstrainedBox(
@@ -36,7 +40,7 @@ class LandingPage extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: wide ? 48 : 20,
-                          vertical: wide ? 40 : 28,
+                          vertical: wide ? 72 : 68,
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -50,6 +54,16 @@ class LandingPage extends StatelessWidget {
                     ),
                   ),
                 ),
+              );
+              return Stack(
+                children: [
+                  page,
+                  PositionedDirectional(
+                    top: 16,
+                    end: 16,
+                    child: SafeArea(child: const LandingToolbar()),
+                  ),
+                ],
               );
             },
           ),
@@ -100,8 +114,8 @@ class _Footer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      '© ${DateTime.now().year} مآب',
-      style: TextStyle(color: LandingColors.cream.withValues(alpha: 0.45), fontSize: 14),
+      '© ${DateTime.now().year} ${LandingStrings.of(context).appName}',
+      style: TextStyle(color: LandingPalette.of(context).footer, fontSize: 14),
     );
   }
 }

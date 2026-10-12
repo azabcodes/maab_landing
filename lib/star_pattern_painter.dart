@@ -2,11 +2,11 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import 'landing_colors.dart';
-
 /// A faint grid of eight-pointed stars behind the page.
 class StarPatternPainter extends CustomPainter {
-  const StarPatternPainter();
+  const StarPatternPainter({required this.color});
+
+  final Color color;
 
   static const double _spacing = 96;
   static const double _radius = 22;
@@ -16,7 +16,7 @@ class StarPatternPainter extends CustomPainter {
     final paint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1
-      ..color = LandingColors.paleGold.withValues(alpha: 0.05);
+      ..color = color;
     final star = _star();
 
     for (var y = 0.0; y < size.height + _spacing; y += _spacing) {
@@ -42,5 +42,5 @@ class StarPatternPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant StarPatternPainter oldDelegate) => false;
+  bool shouldRepaint(covariant StarPatternPainter oldDelegate) => oldDelegate.color != color;
 }
